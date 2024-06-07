@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/tools/clientcmd/api"
+	"os"
 )
 
 func main() {
@@ -13,7 +14,10 @@ func main() {
 
 	// Set usage message for the flags
 	flag.Usage = func() {
-		fmt.Fprintf(flag.CommandLine.Output(), "Usage: %s [options] <kubeconfig1> <kubeconfig2> <output>\n", os.Args[0])
+		_, err := fmt.Fprintf(flag.CommandLine.Output(), "Usage: %s [options] <kubeconfig1> <kubeconfig2> <output>\n", os.Args[0])
+		if err != nil {
+			return
+		}
 		flag.PrintDefaults()
 	}
 
