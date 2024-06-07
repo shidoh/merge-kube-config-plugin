@@ -1,4 +1,4 @@
-module merge-kube-config-plugin
+module main
 
 go 1.22.0
 

@@ -9,28 +9,44 @@ import (
 )
 
 func main() {
-	// Setting flags for command line arguments
-	kubeconfig1 := flag.String("kubeconfig1", "", "Path to the first kubeconfig file")
-	kubeconfig2 := flag.String("kubeconfig2", "", "Path to the second kubeconfig file")
-	output := flag.String("output", "", "Path to the merged kubeconfig file")
+	var kubeconfig1, kubeconfig2, output string
+
+	// Set usage message for the flags
+	flag.Usage = func() {
+		fmt.Fprintf(flag.CommandLine.Output(), "Usage: %s [options] <kubeconfig1> <kubeconfig2> <output>\n", os.Args[0])
+		flag.PrintDefaults()
+	}
+
+	// Define flags
+	flag.StringVar(&kubeconfig1, "kubeconfig1", "", "Path to the first kubeconfig file")
+	flag.StringVar(&kubeconfig2, "kubeconfig2", "", "Path to the second kubeconfig file")
+	flag.StringVar(&output, "output", "", "Path to the merged kubeconfig file")
 	flag.Parse()
 
+	// Check non-flag arguments
+	args := flag.Args()
+	if len(args) >= 3 {
+		kubeconfig1 = args[0]
+		kubeconfig2 = args[1]
+		output = args[2]
+	}
+
 	// Check that all arguments are specified
-	if *kubeconfig1 == "" || *kubeconfig2 == "" || *output == "" {
+	if kubeconfig1 == "" || kubeconfig2 == "" || output == "" {
 		fmt.Println("You must specify the paths to both kubeconfig files and the output file.")
 		flag.Usage()
 		return
 	}
 
 	// Reading the first kubeconfig file
-	config1, err := readKubeconfig(*kubeconfig1)
+	config1, err := readKubeconfig(kubeconfig1)
 	if err != nil {
 		fmt.Printf("Error reading kubeconfig1: %v\n", err)
 		return
 	}
 
 	// Reading the second kubeconfig file
-	config2, err := readKubeconfig(*kubeconfig2)
+	config2, err := readKubeconfig(kubeconfig2)
 	if err != nil {
 		fmt.Printf("Error reading kubeconfig2: %v\n", err)
 		return
@@ -40,7 +56,7 @@ func main() {
 	mergedConfig := mergeKubeconfigs(config1, config2)
 
 	// Saving the merged kubeconfig file
-	if err := writeKubeconfig(*output, mergedConfig); err != nil {
+	if err := writeKubeconfig(output, mergedConfig); err != nil {
 		fmt.Printf("Error writing merged kubeconfig: %v\n", err)
 		return
 	}
