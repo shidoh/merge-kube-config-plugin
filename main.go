@@ -1,4 +1,4 @@
-package merge_kube_config_plugin
+package main
 
 import (
 	"flag"
