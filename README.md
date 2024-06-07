@@ -19,10 +19,10 @@ To use the plugin, you can call it like other `kubectl` commands. It accepts bot
 
 #### With flags:
 ```sh
-kubectl mergeconfig --kubeconfig1=<path_to_first_kubeconfig> --kubeconfig2=<path_to_second_kubeconfig> --output=<path_to_merged_kubeconfig>
+kubectl mergeconf --kubeconfig1=<path_to_first_kubeconfig> --kubeconfig2=<path_to_second_kubeconfig> --output=<path_to_merged_kubeconfig>
 ```
 
 #### With positional arguments:
 ```sh
-kubectl mergeconfig <path_to_first_kubeconfig> <path_to_second_kubeconfig> <path_to_merged_kubeconfig>
+kubectl mergeconf <path_to_first_kubeconfig> <path_to_second_kubeconfig> <path_to_merged_kubeconfig>
 ```
